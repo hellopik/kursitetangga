@@ -5,9 +5,9 @@ const port = 3030
 
 app.get('/kaligung', async (req, res) => {
     try{
-        let jos = await getJejer('2022','4','16','SMC','WLR','205',0)
+        let jos = await getJejer('2022','4','16','SMC','WLR','207',0,'Economy')
 
-        let text = '<b>KALIGUNG SEMARANG - WELERI 16/4/2022 04:16</b><br/><br/>'
+        let text = '<b>KALIGUNG SEMARANG - WELERI 16/4/2022 16:45 (Economy Class) </b><br/><br/>'
 
         jos.forEach((el)=>{
             let wagon = el.filter((x)=>{
@@ -21,11 +21,13 @@ app.get('/kaligung', async (req, res) => {
             text += `Gerbong : ${wagon}<br/>`
 
             el.forEach((x, index)=>{
-                x.forEach((y)=>{
+                x.forEach((y, index2)=>{
                     if(y !== '' && index !== el.length -1){
                         text += `${y.split('-')[1]},`
                     } else if (y !== '' && index === el.length -1){
                         text += `${y.split('-')[1]}<br/><br/>`
+                    } else if(index === el.length -1 && !x.some((op)=>op !== '') && index2 === x.length - 1){
+                        text += `<br/><br/>`
                     }
                 })
             })

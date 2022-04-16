@@ -15,7 +15,7 @@ const getCookies = async() => {
   }
 }
 
-const getSummary = async (cookies, departyear,departmonth,departday,origin,destination,trainNumber) =>{
+const getSummary = async (cookies, departyear,departmonth,departday,origin,destination,trainNumber, kelas) =>{
 
   const options = {
     method: 'POST',
@@ -61,9 +61,9 @@ const getSummary = async (cookies, departyear,departmonth,departday,origin,desti
     let temp = response.data.data.departTrainInventories
   
     let selected = temp.filter((el) => {
-      return el.trainSegments[0]['productSummary']['trainNumber'] === trainNumber
+      return el.trainSegments[0]['productSummary']['trainNumber'] === trainNumber && el.trainSegments[0]['productSummary']['seatClass'] === kelas
     })
-  
+    
     return selected[0]['trainSegments'][0]['productSummary']     
   } catch (error){
     throw `Error at Getting Summary ${error}`
@@ -112,11 +112,11 @@ const getSeat = async (cookies, productSummary) =>{
   }
 }
 
-const Main = async (departyear,departmonth,departday,origin,destination,trainNumber) => {
+const Main = async (departyear,departmonth,departday,origin,destination,trainNumber,kelas) => {
   try{
     // let cookies = await getCookies()
 
-    let productSummary = await getSummary('', departyear,departmonth,departday,origin,destination,trainNumber)
+    let productSummary = await getSummary('', departyear,departmonth,departday,origin,destination,trainNumber,kelas)
   
     let seatMap = await getSeat('', productSummary)
   
@@ -126,9 +126,9 @@ const Main = async (departyear,departmonth,departday,origin,destination,trainNum
   }
 }
 
-const getSeatMap = async(departyear,departmonth,departday,origin,destination,trainNumber) => {
+const getSeatMap = async(departyear,departmonth,departday,origin,destination,trainNumber,kelas) => {
   try{
-    let e = await Main(departyear,departmonth,departday,origin,destination,trainNumber)
+    let e = await Main(departyear,departmonth,departday,origin,destination,trainNumber,kelas)
     let test = e['data']['wagons'].filter((el)=>{
       return el['seating'].some((el2)=>{
         return el2.some((el3)=>{
@@ -165,8 +165,8 @@ const getSeatMap = async(departyear,departmonth,departday,origin,destination,tra
   }
 }
 
-const getJejer = async(departyear,departmonth,departday,origin,destination,trainNumber,numofjejer) => {
-  let seatmap = await getSeatMap(departyear,departmonth,departday,origin,destination,trainNumber)
+const getJejer = async(departyear,departmonth,departday,origin,destination,trainNumber,numofjejer,kelas) => {
+  let seatmap = await getSeatMap(departyear,departmonth,departday,origin,destination,trainNumber,kelas)
 
   if(numofjejer == 2){
     seatmap.filter((el)=>{
