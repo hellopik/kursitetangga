@@ -7,7 +7,7 @@ app.get('/seats', async (req, res) => {
     try{
         let jos = await getJejer('2022',req.query.bulan,req.query.tanggal,req.query.origin,req.query.destination,req.query.trainnumber,0,req.query.kelas)
 
-        let text = '<b>KALIGUNG SEMARANG - WELERI 16/4/2022 16:45 (Economy Class) </b><br/><br/>'
+        let text = `<b>${req.query.origin} - ${req.query.destination} || ${req.query.tanggal} - ${req.query.bulan} - '2022' || ${req.query.trainnumber} - ${req.query.kelas}</b><br/><br/>`
 
         jos.forEach((el)=>{
             let wagon = el.filter((x)=>{
