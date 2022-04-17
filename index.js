@@ -3,9 +3,9 @@ import getJejer from './fn/index.js'
 const app = express()
 const port = 3030
 
-app.get('/kaligung', async (req, res) => {
+app.get('/seats', async (req, res) => {
     try{
-        let jos = await getJejer('2022','4','16','SMC','WLR','207',0,'Economy')
+        let jos = await getJejer('2022',req.query.bulan,req.query.tanggal,req.query.origin,req.query.destination,req.query.trainnumber,0,req.query.kelas)
 
         let text = '<b>KALIGUNG SEMARANG - WELERI 16/4/2022 16:45 (Economy Class) </b><br/><br/>'
 
